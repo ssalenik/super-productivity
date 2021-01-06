@@ -66,6 +66,7 @@ import { concatMap, shareReplay, skipWhile } from 'rxjs/operators';
 import { devError } from '../../util/dev-error';
 import { isValidAppData } from '../../imex/sync/is-valid-app-data.util';
 import { removeFromDb, saveToDb } from './persistence.actions';
+import { crossModelMigrations } from './cross-model-migrations';
 
 @Injectable({
   providedIn: 'root',
@@ -308,10 +309,10 @@ export class PersistenceService {
         throw new Error('Project State is broken');
       }
 
-      r = {
+      r = crossModelMigrations({
         ...(await this._loadAppDataForProjects(pids)),
         ...(await this._loadAppBaseData()),
-      };
+      } as AppDataComplete);
       this._inMemoryComplete = r;
     } else {
       r = this._inMemoryComplete;
