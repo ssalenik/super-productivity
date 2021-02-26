@@ -143,7 +143,8 @@ appIN.on('ready', () => {
     }
   };
 
-  const checkIdle = () => sendIdleMsgIfOverMin(powerMonitor.getSystemIdleTime() * 1000);
+  var desktopIdle = require('desktop-idle');
+  const checkIdle = () => sendIdleMsgIfOverMin(desktopIdle.getIdleTime() * 1000);
 
   // init time tracking interval
   lazySetInterval(checkIdle, CONFIG.IDLE_PING_INTERVAL);
